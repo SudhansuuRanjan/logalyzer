@@ -3,19 +3,21 @@ import Form from '../components/Form'
 
 const UpgLogs = () => {
   return (
-    <div className='overflow-y-auto flex flex-col p-4 w-full h-screen bg-gray-100'>
-      <div className="text">
+    <div className="flex flex-col w-full max-w-full h-full overflow-y-auto bg-gray-100 p-4">
+      <div className="text text-white">
         Analyze <span className="react">EAGLE</span>
         &nbsp;terminal <span className="ts">Logs</span>
       </div>
 
-      <Form />
+      <div className="max-w-full break-words">
+        <Form />
+      </div>
 
-      <div className='flex items-center justify-center w-full mt-10'>
-        <Versions/>
+      <div className="flex items-center justify-center w-full mt-10">
+        <Versions />
       </div>
     </div>
-  )
+  );
 }
 
-export default UpgLogs
+export default UpgLogs;

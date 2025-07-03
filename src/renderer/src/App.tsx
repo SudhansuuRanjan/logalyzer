@@ -8,7 +8,7 @@ function App(): React.JSX.Element {
     <Router>
       <div className='flex h-screen w-screen'>
         <Sidebar />
-        <div className="flex-1 bg-gray-100 w-full">
+        <div className="flex-1 bg-gray-100 overflow-hidden">
           <Routes>
             <Route path="/" element={<UpgLogs />} />
             <Route path="/send" element={<div>Send Component</div>} />

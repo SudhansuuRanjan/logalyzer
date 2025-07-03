@@ -31,6 +31,8 @@ type LogParams = {
   sev2s_details: SevLogDetail[];
   sev3s_details: SevLogDetail[];
   obit_details: ObitLogDetail[]; // can be typed separately
+  eagleRel: string;            // e.g., "Eagle 1.0.0"
+  eagleStation: string;       // e.g., "Station A"
 }
 
 type ObitLogDetail = {
@@ -68,6 +70,8 @@ const logParams: LogParams = {
   sev2s_details: [],
   sev3s_details: [],
   obit_details: [],
+  eagleRel: '',
+  eagleStation: '',
 };
 
 // -------------------------
@@ -96,13 +100,42 @@ function extractLogs(inputLogs: string, filePath: string): LogParams {
     fileParams.lastLine = lines[lines.length - 1].trim();
   }
 
+  extractEagleInfo(lines);
   extractSevs(lines, 'Severity 1');
   extractSevs(lines, 'Severity 2');
   extractSevs(lines, 'Severity 3');
   extractObits(lines, 'Obit');
 
+
   console.log('File Info:', fileParams);
   return logParams;
+}
+
+//--------------------------
+// Extract Eagle Release and Station
+//--------------------------
+function extractEagleInfo(lines: string[]): void {
+  for (const line of lines) {
+    if (line.includes('EST') && line.includes('EAGLE')) {
+      const parts = line.trim().split(/\s+/);
+      const estIndex = parts.indexOf('EST');
+      const eagleIndex = parts.indexOf('EAGLE');
+
+      // Make sure we have valid indexes and values around them
+      if (estIndex > 1 && eagleIndex > estIndex) {
+        const station = parts[0]; // e.g., tklc1111101
+        const release = parts[eagleIndex + 1]; // e.g., 48.0.0.0.0-80.20.0
+
+        console.log('Eagle Release:', `"${release}"`);
+        console.log('Eagle Station:', `"${station}"`);
+        logParams.eagleRel = release;
+        logParams.eagleStation = station;
+        return; // stop after first match
+      }
+    }
+  }
+
+  console.log('Eagle Release and Station not found');
 }
 
 // -------------------------
@@ -241,7 +274,6 @@ function extractObits(lines: string[], keyword: string): void {
         );
 
         // Reason line (starts with STH:)
-        const reasonLine = tempLog.find((l) => l.trim().startsWith('STH:')) || '';
         const moduleLine = tempLog.find((l) => l.includes('Module')) || '';
 
         const moduleMatch = moduleLine.match(
@@ -264,7 +296,7 @@ function extractObits(lines: string[], keyword: string): void {
             time,
             dateTimeIST: dateTimeIST.toISOString().replace('Z', '+05:30'),
             release,
-            reason: reasonLine.trim(),
+            reason: moduleLine.trim(),
             module: moduleMatch?.[2] || '',
             line: moduleMatch?.[3] ? parseInt(moduleMatch[3]) : -1,
             class: moduleMatch?.[4] || '',

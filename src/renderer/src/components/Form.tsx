@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useStore } from "../store/upgLogs";
+import Overview from "./Overview";
+import Table from "./Table";
 
 
 const Form = () => {
-    const [upgLogs, setUpgLogs] = useState<any>(null);
+    const { setUpgradeLogs, upgradeLogs } = useStore();
 
     const openAndReadFile = async () => {
         const filePath = await window.streamFileAPI.openFileDialog();
@@ -22,7 +24,7 @@ const Form = () => {
 
         window.streamFileAPI.onFileEnd((structuredLogs: any) => {
             console.log('Parsed Logs:', structuredLogs);
-            setUpgLogs(structuredLogs);
+            setUpgradeLogs(structuredLogs);  // Update Zustand store
             console.table(structuredLogs.sev1s_details);  // ✅ working usage
         });
         window.streamFileAPI.onFileError((err) => {
@@ -33,7 +35,7 @@ const Form = () => {
 
 
     return (
-        <div className="m-auto flex flex-col w-full">
+        <div className="m-auto flex flex-col w-full select-text">
             <form className="form my-5 self-center m-auto">
                 <button onClick={(e) => {
                     e.preventDefault();
@@ -54,20 +56,40 @@ const Form = () => {
                 Please try pressing <code>F12</code> to open the devTool
             </p>
 
-            {upgLogs && <div className="w-full max-w-[95%] mt-5 p-4 bg-white shadow-md rounded-lg">
-                <h2 className="text-lg font-semibold mt-5">Parsed Logs</h2>
-                <p className="text-gray-600 mt-2">
-                    <span className="font-bold">File Name:</span> {upgLogs.logFileName}
-                </p>
-                <p className="text-gray-600">
-                    <span className="font-bold">File Path:</span> {upgLogs.logFilePath}
-                </p>
-                <pre className="bg-gray-100 p-4 rounded-lg mt-2 text-wrap">
-                    <code className="text-sm">
-                        {JSON.stringify(upgLogs, null, 2)}
-                    </code>
-                </pre>
-            </div>}
+            {upgradeLogs && <><Overview logfile={upgradeLogs} />
+
+                <Table
+                    data={upgradeLogs?.sev1s_details}
+                    prependFields={[
+                        {
+                            key: 'serial',
+                            label: 'S.No',
+                            render: (_, index) => index + 1,
+                        },
+                    ]}
+                    tooltip={"sevHeader"}
+                    renderField={{
+                        dateTimeIST: (val) => new Date(val).toLocaleDateString(),
+                    }}
+                    skipFields={["sevHeader"]}
+                />
+
+                <div className="w-full mt-5 p-4 bg-white shadow-md rounded-lg">
+                    <h2 className="text-lg font-semibold mt-5">Parsed Logs</h2>
+                    <p className="text-gray-600 mt-2">
+                        <span className="font-bold">File Name:</span> {upgradeLogs.logFileName}
+                    </p>
+                    <p className="text-gray-600">
+                        <span className="font-bold">File Path:</span> {upgradeLogs.logFilePath}
+                    </p>
+                    <pre className="bg-gray-100 p-4 rounded-lg mt-2 text-wrap">
+                        <code className="text-sm">
+                            {JSON.stringify(upgradeLogs, null, 2)}
+                        </code>
+                    </pre>
+                </div>
+
+            </>}
 
         </div>
     )

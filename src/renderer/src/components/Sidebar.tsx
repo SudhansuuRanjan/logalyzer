@@ -1,16 +1,16 @@
 import { NavLink } from 'react-router-dom';
-import { FaWifi, FaPaperPlane, FaCog } from 'react-icons/fa';
+import { FaWifi, FaTools, FaSdCard } from 'react-icons/fa';
 import electronLogo from '../assets/electron.svg'
 
 const Sidebar = () => {
   const navItems = [
     { name: 'Analyze Upg Logs', path: '/', icon: <FaWifi /> },
-    { name: 'Send', path: '/send', icon: <FaPaperPlane /> },
-    { name: 'Settings', path: '/settings', icon: <FaCog /> },
+    { name: 'Eagle Cards', path: '/send', icon: <FaSdCard /> },
+    { name: 'Tools', path: '/settings', icon: <FaTools /> },
   ];
 
   return (
-    <div className="h-screen w-64 bg-white border-r border-r-gray-300 self-start text-gray-900 flex flex-col py-6 px-4 shadow-md">
+    <div className="h-screen w-56 min-w-56 bg-white border-r border-r-gray-300 self-start text-gray-900 flex flex-col py-6 px-4 shadow-md">
       <img alt="logo" className="logo" src={electronLogo} />
       <h1 className="text-2xl font-bold px-2">Logalyzer</h1>
       <nav className="flex flex-col w-full gap-5 mt-10">
