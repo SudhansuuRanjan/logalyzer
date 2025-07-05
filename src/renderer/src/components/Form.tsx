@@ -36,25 +36,21 @@ const Form = () => {
 
     return (
         <div className="m-auto flex flex-col w-full select-text">
-            <form className="form my-5 self-center m-auto">
+            <form className="form my-10 self-center m-auto">
                 <button onClick={(e) => {
                     e.preventDefault();
                     openAndReadFile()
                 }} className="file-label">
 
-                    <div className='font-medium text-lg text-gray-800'>
+                    <div className='font-medium text-lg text-pink-800'>
                         Select Log File
                     </div>
 
-                    <div className='text-gray-500 text-base mt-3'>
+                    <div className='text-pink-500 text-base mt-3'>
                         File Type : .txt, .log, .cap
                     </div>
                 </button>
             </form>
-
-            <p className="text-gray-500 text-sm mt-4 text-center">
-                Please try pressing <code>F12</code> to open the devTool
-            </p>
 
             {upgradeLogs && <><Overview logfile={upgradeLogs} />
 

@@ -3,7 +3,7 @@ import Form from '../components/Form'
 
 const UpgLogs = () => {
   return (
-    <div className="flex flex-col w-full max-w-full h-full overflow-y-auto bg-gray-100 p-4">
+    <div className="flex flex-col w-full max-w-full h-full overflow-y-auto p-4">
       <div className="text text-white">
         Analyze <span className="react">EAGLE</span>
         &nbsp;terminal <span className="ts">Logs</span>

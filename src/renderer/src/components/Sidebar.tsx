@@ -1,26 +1,49 @@
 import { NavLink } from 'react-router-dom';
-import { FaWifi, FaTools, FaSdCard } from 'react-icons/fa';
-import electronLogo from '../assets/electron.svg'
+import { FaTools, FaSdCard, FaNetworkWired, FaSearch } from 'react-icons/fa';
+import electronLogo from '../assets/electron.svg';
 
 const Sidebar = () => {
   const navItems = [
-    { name: 'Analyze Upg Logs', path: '/', icon: <FaWifi /> },
-    { name: 'Eagle Cards', path: '/send', icon: <FaSdCard /> },
-    { name: 'Tools', path: '/settings', icon: <FaTools /> },
+    { name: 'Analyze Upgrade Logs', path: '/', icon: <FaSearch/> },
+    { name: 'Eagle Cards', path: '/cards', icon: <FaSdCard /> },
+    { name: 'Tools', path: '/tools', icon: <FaTools /> },
+    { name: 'Traffic', path: '/traffic', icon: <FaNetworkWired /> },
   ];
 
   return (
-    <div className="h-screen w-56 min-w-56 bg-white border-r border-r-gray-300 self-start text-gray-900 flex flex-col py-6 px-4 shadow-md">
-      <img alt="logo" className="logo" src={electronLogo} />
-      <h1 className="text-2xl font-bold px-2">Logalyzer</h1>
-      <nav className="flex flex-col w-full gap-5 mt-10">
+    <div className="h-screen w-64 bg-pink-50 text-pink-700 flex flex-col px-4 py-6 shadow-sm transition-all">
+      {/* Logo */}
+      <div className="flex items-center gap-2 px-2">
+        <img src={electronLogo} alt="logo" className="h-6 w-6" />
+        <h1 className="text-xl font-bold">Logalyzer</h1>
+      </div>
+
+      {/* New Chat Button */}
+      {/* <button className="mt-6 bg-pink-500 hover:bg-pink-600 transition-all text-white font-semibold px-4 py-2 rounded-md shadow-md">
+        New Chat
+      </button> */}
+
+      {/* Search Field */}
+      <div className="mt-6">
+        <input
+          type="text"
+          placeholder="Search Tools..."
+          className="w-full px-3 py-2 rounded-md border border-pink-300 bg-pink-100 text-pink-900 placeholder-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-400"
+        />
+      </div>
+
+      {/* Navigation Items */}
+      <nav className="flex flex-col gap-2 mt-8">
+        <span className="text-xs uppercase text-pink-400 pl-2">AVAILABLE TOOLS</span>
         {navItems.map(({ name, path, icon }) => (
           <NavLink
             key={name}
             to={path}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg font-medium hover:bg-gray-100 transition-all ${
-                isActive ? 'bg-gray-200 text-black' : 'text-gray-600'
+              `flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
+                isActive
+                  ? 'bg-white text-pink-900 shadow-sm'
+                  : 'text-pink-700 hover:bg-white hover:text-pink-900'
               }`
             }
           >
@@ -29,6 +52,17 @@ const Sidebar = () => {
           </NavLink>
         ))}
       </nav>
+
+      {/* Footer Login */}
+      <div className="mt-auto pt-6">
+        <NavLink
+          to="/login"
+          className="flex items-center text-pink-700 hover:text-pink-900 gap-2 text-sm font-medium transition-all"
+        >
+          <span className="text-lg">→</span>
+          Login
+        </NavLink>
+      </div>
     </div>
   );
 };
