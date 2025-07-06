@@ -4,6 +4,26 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import fs from "fs"
 import extractLogs from './process_log'
+import Database from 'better-sqlite3';
+import path from 'path';
+const dbPath = path.join(__dirname, 'mydatabase.db');
+
+export const db = new Database(dbPath);
+
+try {
+  console.log('Initializing database at:', dbPath);
+  // Example table creation
+  db.prepare(`
+  CREATE TABLE IF NOT EXISTS notes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    content TEXT
+  )
+`).run();
+
+} catch (error) {
+  console.error('Error initializing database:', error);
+}
 
 function createWindow(): void {
   // Create the browser window.
