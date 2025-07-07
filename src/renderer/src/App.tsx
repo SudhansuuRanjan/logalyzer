@@ -11,6 +11,9 @@ import HexDecBinary from './pages/Tools/HexDecBinary';
 import IPHexDecBinary from './pages/Tools/IPHexDecBinary';
 import Replicator from './pages/Tools/Replicator';
 
+// Cards
+import Ipsm from './pages/Cards/Ipsm';
+
 function App(): React.JSX.Element {
 
   return (
@@ -30,6 +33,9 @@ function App(): React.JSX.Element {
               <Route path="/tools/hex-dec-binary" element={<HexDecBinary />} />
               <Route path="/tools/ip-hex-dec-binary" element={<IPHexDecBinary />} />
               <Route path="/tools/replicator" element={<Replicator/>} />
+
+              {/* Cards */}
+              <Route path="/cards/ipsm" element={<Ipsm />} />
             </Routes>
           </div>
         </div>

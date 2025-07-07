@@ -1,5 +1,5 @@
 import { FaCopy } from "react-icons/fa";
-import CodeEditor from "./CodeEditor"
+import CodeEditor from "../../components/CodeEditor"
 import { useState } from "react"
 
 const Replicator = () => {
