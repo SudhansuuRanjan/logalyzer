@@ -5,6 +5,12 @@ import Cards from './pages/Cards';
 import Tools from './pages/Tools';
 import Traffic from './pages/Traffic';
 
+// tools
+import PointCodeConverter from './pages/Tools/PointCodeConverter';
+import HexDecBinary from './pages/Tools/HexDecBinary';
+import IPHexDecBinary from './pages/Tools/IPHexDecBinary';
+import Replicator from './pages/Tools/Replicator';
+
 function App(): React.JSX.Element {
 
   return (
@@ -18,6 +24,12 @@ function App(): React.JSX.Element {
               <Route path="/cards" element={<Cards />} />
               <Route path="/tools" element={<Tools />} />
               <Route path="/traffic" element={<Traffic />} />
+
+              {/* Tools */}
+              <Route path="/tools/point-code-converter" element={<PointCodeConverter />} />
+              <Route path="/tools/hex-dec-binary" element={<HexDecBinary />} />
+              <Route path="/tools/ip-hex-dec-binary" element={<IPHexDecBinary />} />
+              <Route path="/tools/replicator" element={<Replicator/>} />
             </Routes>
           </div>
         </div>
