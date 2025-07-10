@@ -1,5 +1,6 @@
 import Sidebar from './components/Sidebar'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import UpgLogs from './pages/UpgLogs';
 import Cards from './pages/Cards';
 import Tools from './pages/Tools';
@@ -13,6 +14,11 @@ import Replicator from './pages/Tools/Replicator';
 
 // Cards
 import Ipsm from './pages/Cards/Ipsm';
+import Mcpm from './pages/Cards/Mcpm';
+import Sfapp from './pages/Cards/Sfapp';
+import Sccp from './pages/Cards/Sccp';
+import Enum from './pages/Cards/Enum';
+import SIP from './pages/Cards/SIP';
 
 function App(): React.JSX.Element {
 
@@ -32,13 +38,22 @@ function App(): React.JSX.Element {
               <Route path="/tools/point-code-converter" element={<PointCodeConverter />} />
               <Route path="/tools/hex-dec-binary" element={<HexDecBinary />} />
               <Route path="/tools/ip-hex-dec-binary" element={<IPHexDecBinary />} />
-              <Route path="/tools/replicator" element={<Replicator/>} />
+              <Route path="/tools/replicator" element={<Replicator />} />
 
               {/* Cards */}
               <Route path="/cards/ipsm" element={<Ipsm />} />
+              <Route path="/cards/mcpm" element={<Mcpm />} />
+              <Route path="/cards/sfapp" element={<Sfapp />} />
+              <Route path="/cards/sccp" element={<Sccp />} />
+              <Route path="/cards/enum" element={<Enum />} />
+              <Route path="/cards/sip" element={<SIP />} />
+
+              {/* Default route */}
             </Routes>
           </div>
         </div>
+
+        <Toaster />
       </div>
     </Router>
   )

@@ -3,12 +3,10 @@ import CodeEditor from "@renderer/components/CodeEditor";
 import { useState } from "react"
 import toast from "react-hot-toast";
 
-const Ipsm = () => {
+const Mcpm = () => {
     const [cardLoc, setCardLoc] = useState<Number>(1101);
     const [ipAddress, setIpAddress] = useState("");
-    const [sflog, setSflog] = useState("no");
     const [defrouter, setDefrouter] = useState("");
-    const [startTerminal, setStartTerminal] = useState("17");
     const [generatedCmds, setGeneratedCmds] = useState("");
 
     const generateCmds = () => {
@@ -17,28 +15,20 @@ const Ipsm = () => {
             return;
         }
 
-        let cmds = `ent-card:loc=${cardLoc}:appl=ips:type=ipsm${sflog === "yes" ? ":sflog=yes" : ""}
+        let cmds = `ent-card:loc=${cardLoc}:appl=mcp:type=mcpm
 chg-ip-lnk:port=a:loc=${cardLoc}:ipaddr=${ipAddress}:submask=255.255.255.0:speed=100:duplex=full:auto=no:mcast=no
-ent-ip-host:host=ipsm${cardLoc}a:ipaddr=${ipAddress}:type=local
+ent-ip-host:host=mcpm${cardLoc}a:ipaddr=${ipAddress}:type=local
 chg-ip-card:loc=${cardLoc}:defrouter=${defrouter}
 alw-card:loc=${cardLoc}`;
-
-        if (startTerminal !== "none") {
-            cmds += `\n\n`;
-            for (let index = 0; index < 8; index++) {
-                cmds += `alw-trm:trm=${Number(startTerminal) + index}\n`;
-            }
-        }
-
         setGeneratedCmds(cmds);
         toast.success("Commands generated successfully!");
     }
 
     return (
         <div className="flex flex-col p-8 w-full max-w-full h-full overflow-y-auto">
-            <h1 className="text-3xl font-bold text-pink-950 text-center">IPSM Card</h1>
+            <h1 className="text-3xl font-bold text-pink-950 text-center">MCPM Card</h1>
             <p className="max-w-xl text-pink-900/60 text-center my-2 m-auto">
-                Generate IPSM card commands by specifying the card location.
+                Generate MCPM card commands by specifying the card location.
             </p>
 
             <form className="mt-5">
@@ -66,31 +56,6 @@ alw-card:loc=${cardLoc}`;
                             onChange={(e) => setIpAddress(e.target.value)}
                         />
                     </div>
-
-                    <div className="w-full">
-                        <label className="block font-medium text-sm mb-2">Sflog</label>
-                        <select
-                            className="w-full mb-1 p-2 rounded border border-pink-300"
-                            name="sflog"
-                            value={sflog}
-                            onChange={(e) => {
-                                // if sflog is set to "yes", set terminal to None
-                                if (e.target.value === "yes") {
-                                    setStartTerminal("none");
-                                    setSflog(e.target.value);
-                                }else{
-                                    if (e.target.value === "no") {
-                                        setSflog(e.target.value);
-                                    }
-                                    // if sflog is set to "no", set terminal to 17
-                                    setStartTerminal("17");
-                                }
-                            }}
-                        >
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
-                        </select>
-                    </div>
                 </div>
 
                 <div className="flex gap-4 mt-4 items-center">
@@ -104,21 +69,6 @@ alw-card:loc=${cardLoc}`;
                             value={defrouter}
                             onChange={(e) => setDefrouter(e.target.value)}
                         />
-                    </div>
-
-                    <div className="w-full">
-                        <label className="block font-medium text-sm mb-2">Start Terminal</label>
-                        <select
-                            className="w-full mb-1 p-2 rounded border border-pink-300"
-                            name="start_terminal"
-                            value={startTerminal}
-                            onChange={(e) => setStartTerminal(e.target.value)}
-                        >
-                            <option value="17">17</option>
-                            <option value="25">25</option>
-                            <option value="33">33</option>
-                            <option value="none">None</option>
-                        </select>
                     </div>
 
                     <button
@@ -152,4 +102,4 @@ alw-card:loc=${cardLoc}`;
     )
 }
 
-export default Ipsm
+export default Mcpm

@@ -10,6 +10,31 @@ const Cards = () => {
       name: "IPSM Card",
       description: "IPSM Card for networking and telnet sessions.",
     },
+    {
+      path: "/cards/mcpm",
+      name: "MCPM Card",
+      description: "MCPM Card for getting measurement reports via Measurement Platform.",
+    },
+    {
+      path: "/cards/sfapp",
+      name: "SFAPP Card",
+      description: "SFAPP Card for processing Stateful Applications traffic.",
+    },
+    {
+      path: "/cards/sccp",
+      name: "SCCP Card",
+      description: "SCCP Card for processing GTT, SCCP & DEIR traffic.",
+    },
+    {
+      path: "/cards/enum",
+      name: "ENUM Card",
+      description: "ENUM Card for processing ENUM traffic.",
+    },
+    {
+      path : "/cards/sip",
+      name: "SIP Card",
+      description: "SIP Card for processing SIP NP traffic.",
+    },
   ]
 
   const filteredCards = cards.filter(

@@ -3,32 +3,33 @@ import CodeEditor from "@renderer/components/CodeEditor";
 import { useState } from "react"
 import toast from "react-hot-toast";
 
-const Ipsm = () => {
+const Sccp = () => {
     const [cardLoc, setCardLoc] = useState<Number>(1101);
-    const [ipAddress, setIpAddress] = useState("");
-    const [sflog, setSflog] = useState("no");
-    const [defrouter, setDefrouter] = useState("");
-    const [startTerminal, setStartTerminal] = useState("17");
+    const [cardType, setCardType] = useState("slic");
+    const [ipAddressA, setIpAddressA] = useState("");
+    const [ipAddressB, setIpAddressB] = useState("");
+    const [defrouter, setDefrouter] = useState("192.168.120.250");
     const [generatedCmds, setGeneratedCmds] = useState("");
 
     const generateCmds = () => {
-        if (!cardLoc || !ipAddress || !defrouter) {
+        if (!cardLoc || !cardType || !defrouter) {
             toast.error("Please fill in all fields.");
             return;
         }
 
-        let cmds = `ent-card:loc=${cardLoc}:appl=ips:type=ipsm${sflog === "yes" ? ":sflog=yes" : ""}
-chg-ip-lnk:port=a:loc=${cardLoc}:ipaddr=${ipAddress}:submask=255.255.255.0:speed=100:duplex=full:auto=no:mcast=no
-ent-ip-host:host=ipsm${cardLoc}a:ipaddr=${ipAddress}:type=local
+        if (cardType !== "slic" && cardType !== "dsm") {
+            toast.error("Invalid card type. Please select either 'slic' or 'dsm'.");
+            return;
+        }
+
+        if (ipAddressA === "" && ipAddressB === "") {
+            toast.error("Please provide at least one IP address.");
+            return;
+        }
+
+        let cmds = `ent-card:loc=${cardLoc}:appl=vsccp:type=${cardType}${ipAddressA && `\nchg-ip-lnk:port=a:loc=${cardLoc}:ipaddr=${ipAddressA}:submask=255.255.255.0:speed=1000:duplex=full:auto=no:mcast=yes`}${ipAddressB && `\nchg-ip-lnk:port=b:loc=${cardLoc}:ipaddr=${ipAddressB}:submask=255.255.255.0:speed=1000:duplex=full:auto=no:mcast=yes`}
 chg-ip-card:loc=${cardLoc}:defrouter=${defrouter}
 alw-card:loc=${cardLoc}`;
-
-        if (startTerminal !== "none") {
-            cmds += `\n\n`;
-            for (let index = 0; index < 8; index++) {
-                cmds += `alw-trm:trm=${Number(startTerminal) + index}\n`;
-            }
-        }
 
         setGeneratedCmds(cmds);
         toast.success("Commands generated successfully!");
@@ -36,9 +37,9 @@ alw-card:loc=${cardLoc}`;
 
     return (
         <div className="flex flex-col p-8 w-full max-w-full h-full overflow-y-auto">
-            <h1 className="text-3xl font-bold text-pink-950 text-center">IPSM Card</h1>
+            <h1 className="text-3xl font-bold text-pink-950 text-center">SCCP Card</h1>
             <p className="max-w-xl text-pink-900/60 text-center my-2 m-auto">
-                Generate IPSM card commands by specifying the card location.
+                Generate SCCP card commands by specifying the card location.
             </p>
 
             <form className="mt-5">
@@ -56,44 +57,21 @@ alw-card:loc=${cardLoc}`;
                     </div>
 
                     <div className="w-full">
-                        <label className="block font-medium text-sm mb-2">IP Address</label>
-                        <input
-                            type="text"
-                            className="w-full mb-1 p-2 rounded border border-pink-300"
-                            placeholder="Enter IP address..."
-                            name="ip_address"
-                            value={ipAddress}
-                            onChange={(e) => setIpAddress(e.target.value)}
-                        />
-                    </div>
-
-                    <div className="w-full">
-                        <label className="block font-medium text-sm mb-2">Sflog</label>
+                        <label className="block font-medium text-sm mb-2">Card Type</label>
                         <select
                             className="w-full mb-1 p-2 rounded border border-pink-300"
-                            name="sflog"
-                            value={sflog}
+                            name="card_type"
+                            value={cardType}
                             onChange={(e) => {
-                                // if sflog is set to "yes", set terminal to None
-                                if (e.target.value === "yes") {
-                                    setStartTerminal("none");
-                                    setSflog(e.target.value);
-                                }else{
-                                    if (e.target.value === "no") {
-                                        setSflog(e.target.value);
-                                    }
-                                    // if sflog is set to "no", set terminal to 17
-                                    setStartTerminal("17");
-                                }
+                                setCardType(e.target.value);
                             }}
-                        >
-                            <option value="no">No</option>
-                            <option value="yes">Yes</option>
+                        > 
+                            <option value="">Select Card Type</option>
+                            <option value="slic">SLIC</option>
+                            <option value="dsm">DSM</option>
                         </select>
                     </div>
-                </div>
 
-                <div className="flex gap-4 mt-4 items-center">
                     <div className="w-full">
                         <label className="block font-medium text-sm mb-2">Defrouter</label>
                         <input
@@ -105,20 +83,31 @@ alw-card:loc=${cardLoc}`;
                             onChange={(e) => setDefrouter(e.target.value)}
                         />
                     </div>
+                </div>
+
+                <div className="flex gap-4 mt-4 items-center">
+                    <div className="w-full">
+                        <label className="block font-medium text-sm mb-2">IP Address A</label>
+                        <input
+                            type="text"
+                            className="w-full mb-1 p-2 rounded border border-pink-300"
+                            placeholder="Enter IP address..."
+                            name="ip_address"
+                            value={ipAddressA}
+                            onChange={(e) => setIpAddressA(e.target.value)}
+                        />
+                    </div>
 
                     <div className="w-full">
-                        <label className="block font-medium text-sm mb-2">Start Terminal</label>
-                        <select
+                        <label className="block font-medium text-sm mb-2">IP Address B</label>
+                        <input
+                            type="text"
                             className="w-full mb-1 p-2 rounded border border-pink-300"
-                            name="start_terminal"
-                            value={startTerminal}
-                            onChange={(e) => setStartTerminal(e.target.value)}
-                        >
-                            <option value="17">17</option>
-                            <option value="25">25</option>
-                            <option value="33">33</option>
-                            <option value="none">None</option>
-                        </select>
+                            placeholder="Enter IP address..."
+                            name="ip_address"
+                            value={ipAddressB}
+                            onChange={(e) => setIpAddressB(e.target.value)}
+                        />
                     </div>
 
                     <button
@@ -152,4 +141,4 @@ alw-card:loc=${cardLoc}`;
     )
 }
 
-export default Ipsm
+export default Sccp;
