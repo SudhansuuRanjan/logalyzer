@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 
 const SIP = () => {
     const [cardLoc, setCardLoc] = useState<number>(1101);
+    const [data, setData] = useState("dn");
     const [cardType, setCardType] = useState("slic");
     const [ipAddressA, setIpAddressA] = useState("");
     const [ipAddressB, setIpAddressB] = useState("");
@@ -15,6 +16,7 @@ const SIP = () => {
     const [generatedCmds, setGeneratedCmds] = useState("");
     const [start_lport, setStart_lport] = useState(2032);
     const [start_rport, setStart_rport] = useState(3042);
+    const [bpipaddr, setBpIpAddr] = useState("192.168.122.13");
 
     const generateCmds = () => {
         if (!cardLoc || !cardType) {
@@ -36,6 +38,19 @@ const SIP = () => {
             toast.error("Please provide at least one IP address for B or C. (Network)");
             return;
         }
+
+        // if ipaddressB is specified, then remoteB is required
+        if (ipAddressB && ipAddressRemoteB === "") {
+            toast.error("Please provide a remote IP address for B.");
+            return;
+        }
+
+        // if ipaddressC is specified, then remoteC is required
+        if (ipAddressC && ipAddressRemoteC === "") {
+            toast.error("Please provide a remote IP address for C.");
+            return;
+        }
+
 
         const generateTCPcmds = (b_included: any, a_included: any, card_loc: number, start_lport: number, start_rport: number, rhostb: any, rhostc: any) => {
             let cmds = "";
@@ -82,7 +97,7 @@ const SIP = () => {
             // chg-ip-conn:cname=s1108tcp1:open=yes
         }
 
-        let cmds = `ent-card:loc=${cardLoc}:type=${cardType}:appl=siphc
+        let cmds = `ent-card:loc=${cardLoc}:type=${cardType}:appl=siphc:data=${data}
 ${ipAddressA && `Chg-ip-lnk:loc=${cardLoc}:port=A:ipaddr=${ipAddressA}:mactype=DIX:submask=255.255.255.0:duplex=full:speed=1000:mcast=YES`}
 ${ipAddressB && `CHG-IP-LNK:PORT=b:SUBMASK=255.255.255.224:IPADDR=${ipAddressB}:LOC=${cardLoc}:speed=100:duplex=full:auto=no`}
 ${ipAddressC && `CHG-IP-LNK:PORT=c:SUBMASK=255.255.255.224:IPADDR=${ipAddressC}:LOC=${cardLoc}:speed=100:duplex=full:auto=no`}
@@ -98,6 +113,8 @@ ${ipAddressB && `ENT-IP-CONN:LPORT=5353:LHOST=sip${cardLoc}b:PROT=UDP:CNAME=Conn
 ${ipAddressC && `ENT-IP-CONN:LPORT=5354:LHOST=sip${cardLoc}c:PROT=UDP:CNAME=Conn2\nCHG-IP-CONN:OPEN=YES:CNAME=Conn2`}
 
 ${generateTCPcmds(ipAddressB, ipAddressC, cardLoc, 2032, 3042, "rsipb", "rsipc")}
+
+${data === "elap" && `chg-ip-card:loc=${cardLoc}:defrouter=190.168.120.150:bpipaddr=${bpipaddr}:bpsubmask=255.255.255.0`}
 
 alw-card:loc=${cardLoc}`;
 
@@ -153,6 +170,21 @@ alw-card:loc=${cardLoc}`;
                         </select>
                     </div>
 
+                    <div className="w-full">
+                        <label className="block font-medium text-sm mb-2">Card Data Type</label>
+                        <select
+                            className="w-full mb-1 p-2 rounded border border-pink-300"
+                            name="data_type"
+                            value={data}
+                            onChange={(e) => {
+                                setData(e.target.value);
+                            }}
+                        >
+                            <option value="dn">DN</option>
+                            <option value="elap">ELAP</option>
+                        </select>
+                    </div>
+
                 </div>
 
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -165,6 +197,7 @@ alw-card:loc=${cardLoc}`;
 
                     {showCD && inputField("Start LPort", start_lport.toString(), (v) => setStart_lport(Number(v)), "start_lport")}
                     {showCD && inputField("Start RPort", start_rport.toString(), (v) => setStart_rport(Number(v)), "start_rport")}
+                    {data == "elap" && inputField("BP IP Address", bpipaddr, setBpIpAddr, "bp_ip_address")}
                 </div>
 
                 <button
