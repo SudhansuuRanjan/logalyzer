@@ -99,8 +99,8 @@ const SIP = () => {
 
         let cmds = `ent-card:loc=${cardLoc}:type=${cardType}:appl=siphc:data=${data}
 ${ipAddressA && `Chg-ip-lnk:loc=${cardLoc}:port=A:ipaddr=${ipAddressA}:mactype=DIX:submask=255.255.255.0:duplex=full:speed=1000:mcast=YES`}
-${ipAddressB && `CHG-IP-LNK:PORT=b:SUBMASK=255.255.255.224:IPADDR=${ipAddressB}:LOC=${cardLoc}:speed=100:duplex=full:auto=no`}
-${ipAddressC && `CHG-IP-LNK:PORT=c:SUBMASK=255.255.255.224:IPADDR=${ipAddressC}:LOC=${cardLoc}:speed=100:duplex=full:auto=no`}
+${ipAddressB && `CHG-IP-LNK:PORT=b:SUBMASK=255.255.255.0:IPADDR=${ipAddressB}:LOC=${cardLoc}:speed=100:duplex=full:auto=no`}
+${ipAddressC && `CHG-IP-LNK:PORT=c:SUBMASK=255.255.255.0:IPADDR=${ipAddressC}:LOC=${cardLoc}:speed=100:duplex=full:auto=no`}
 ${ipAddressD && `Chg-ip-lnk:loc=${cardLoc}:port=D:ipaddr=${ipAddressD}:mactype=DIX:submask=255.255.255.0:duplex=full:speed=1000:mcast=YES`}
 
 ${ipAddressB && `ENT-IP-HOST:HOST=sip${cardLoc}b:IPADDR=${ipAddressB}:TYPE=LOCAL`}

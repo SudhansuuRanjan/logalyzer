@@ -35,6 +35,11 @@ const Cards = () => {
       name: "SIP Card",
       description: "SIP Card for processing SIP NP traffic.",
     },
+    {
+      path: "/cards/deir",
+      name: "DEIR Card",
+      description: "DEIR Card for processing Diameter EIR traffic.",
+    },
   ]
 
   const filteredCards = cards.filter(
