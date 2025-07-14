@@ -1,5 +1,5 @@
 import Versions from '../components/Versions'
-import Form from '../components/Form'
+import Form from '../components/LogAnalyzerForm'
 
 const UpgLogs = () => {
   return (

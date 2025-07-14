@@ -2,7 +2,6 @@ import { useStore } from "../store/upgLogs";
 import Overview from "./Overview";
 import Table from "./Table";
 
-
 const Form = () => {
     const { setUpgradeLogs, upgradeLogs } = useStore();
 
@@ -70,7 +69,7 @@ const Form = () => {
                     skipFields={["sevHeader"]}
                 />
 
-                <div className="w-full mt-5 p-4 bg-white shadow-md rounded-lg">
+                {/* <div className="w-full mt-5 p-4 bg-white shadow-md rounded-lg">
                     <h2 className="text-lg font-semibold mt-5">Parsed Logs</h2>
                     <p className="text-gray-600 mt-2">
                         <span className="font-bold">File Name:</span> {upgradeLogs.logFileName}
@@ -83,7 +82,7 @@ const Form = () => {
                             {JSON.stringify(upgradeLogs, null, 2)}
                         </code>
                     </pre>
-                </div>
+                </div> */}
 
             </>}
 

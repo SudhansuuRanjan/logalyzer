@@ -114,7 +114,7 @@ ${ipAddressC && `ENT-IP-CONN:LPORT=5354:LHOST=sip${cardLoc}c:PROT=UDP:CNAME=Conn
 
 ${generateTCPcmds(ipAddressB, ipAddressC, cardLoc, 2032, 3042, "rsipb", "rsipc")}
 
-${data === "elap" && `chg-ip-card:loc=${cardLoc}:defrouter=190.168.120.150:bpipaddr=${bpipaddr}:bpsubmask=255.255.255.0`}
+${data === "elap" ? `chg-ip-card:loc=${cardLoc}:defrouter=190.168.120.150:bpipaddr=${bpipaddr}:bpsubmask=255.255.255.0` : ""}
 
 alw-card:loc=${cardLoc}`;
 
