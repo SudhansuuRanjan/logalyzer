@@ -40,6 +40,11 @@ const Cards = () => {
       name: "DEIR Card",
       description: "DEIR Card for processing Diameter EIR traffic.",
     },
+    {
+      path: "/cards/ipsg",
+      name: "IPSG Card",
+      description: "IPSG Card for processing IP Signalling (SIGTRAN) traffic.",
+    }
   ]
 
   const filteredCards = cards.filter(

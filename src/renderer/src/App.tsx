@@ -20,6 +20,7 @@ import Sccp from './pages/Cards/Sccp';
 import Enum from './pages/Cards/Enum';
 import SIP from './pages/Cards/SIP';
 import Deir from './pages/Cards/Deir';
+import Ipsg from './pages/Cards/Ipsg';
 
 function App(): React.JSX.Element {
 
@@ -49,6 +50,7 @@ function App(): React.JSX.Element {
               <Route path="/cards/enum" element={<Enum />} />
               <Route path="/cards/sip" element={<SIP />} />
               <Route path="/cards/deir" element={<Deir />} />
+              <Route path="/cards/ipsg" element={<Ipsg/>} />
 
               {/* Default route */}
             </Routes>
