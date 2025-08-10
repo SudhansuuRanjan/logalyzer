@@ -109,10 +109,10 @@ ${ipAddressC && `ENT-IP-HOST:HOST=sip${cardLoc}c:IPADDR=${ipAddressC}:TYPE=LOCAL
 ${ipAddressRemoteB && `ENT-IP-HOST:HOST=rsipb:IPADDR=${ipAddressRemoteB}:TYPE=remote`}
 ${ipAddressRemoteC && `ENT-IP-HOST:HOST=rsipc:IPADDR=${ipAddressRemoteC}:TYPE=remote`}
 
-${ipAddressB && `ENT-IP-CONN:LPORT=5353:LHOST=sip${cardLoc}b:PROT=UDP:CNAME=Conn1\nCHG-IP-CONN:OPEN=YES:CNAME=Conn1`}
-${ipAddressC && `ENT-IP-CONN:LPORT=5354:LHOST=sip${cardLoc}c:PROT=UDP:CNAME=Conn2\nCHG-IP-CONN:OPEN=YES:CNAME=Conn2`}
+${ipAddressB && `ENT-IP-CONN:LPORT=${start_lport}:LHOST=sip${cardLoc}b:PROT=UDP:CNAME=Conn1\nCHG-IP-CONN:OPEN=YES:CNAME=Conn1`}
+${ipAddressC && `ENT-IP-CONN:LPORT=${start_lport + 1}:LHOST=sip${cardLoc}c:PROT=UDP:CNAME=Conn2\nCHG-IP-CONN:OPEN=YES:CNAME=Conn2`}
 
-${generateTCPcmds(ipAddressB, ipAddressC, cardLoc, 2032, 3042, "rsipb", "rsipc")}
+${generateTCPcmds(ipAddressB, ipAddressC, cardLoc, start_lport + 2, start_rport + 2, "rsipb", "rsipc")}
 
 ${data === "elap" ? `chg-ip-card:loc=${cardLoc}:defrouter=190.168.120.150:bpipaddr=${bpipaddr}:bpsubmask=255.255.255.0` : ""}
 

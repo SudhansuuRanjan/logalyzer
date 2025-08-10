@@ -7,7 +7,7 @@ const Sidebar = () => {
     { name: 'Analyze Upgrade Logs', path: '/', icon: <FaSearch/> },
     { name: 'Eagle Cards', path: '/cards', icon: <FaSdCard /> },
     { name: 'Tools', path: '/tools', icon: <FaTools /> },
-    { name: 'Traffic', path: '/traffic', icon: <FaNetworkWired /> },
+    { name: 'How To?', path: '/how-to', icon: <FaNetworkWired /> },
   ];
 
   return (

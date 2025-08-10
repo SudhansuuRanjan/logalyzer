@@ -4,7 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import UpgLogs from './pages/UpgLogs';
 import Cards from './pages/Cards';
 import Tools from './pages/Tools';
-import Traffic from './pages/Traffic';
+import HowTo from './pages/HowTo';
 
 // tools
 import PointCodeConverter from './pages/Tools/PointCodeConverter';
@@ -22,6 +22,8 @@ import SIP from './pages/Cards/SIP';
 import Deir from './pages/Cards/Deir';
 import Ipsg from './pages/Cards/Ipsg';
 
+// How to
+
 function App(): React.JSX.Element {
 
   return (
@@ -34,7 +36,7 @@ function App(): React.JSX.Element {
               <Route path="/" element={<UpgLogs />} />
               <Route path="/cards" element={<Cards />} />
               <Route path="/tools" element={<Tools />} />
-              <Route path="/traffic" element={<Traffic />} />
+              <Route path="/how-to" element={<HowTo />} />
 
               {/* Tools */}
               <Route path="/tools/point-code-converter" element={<PointCodeConverter />} />
@@ -51,6 +53,8 @@ function App(): React.JSX.Element {
               <Route path="/cards/sip" element={<SIP />} />
               <Route path="/cards/deir" element={<Deir />} />
               <Route path="/cards/ipsg" element={<Ipsg/>} />
+
+              {/* How to */}
 
               {/* Default route */}
             </Routes>

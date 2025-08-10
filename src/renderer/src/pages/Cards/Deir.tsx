@@ -148,7 +148,7 @@ ${ipAddressC && `ENT-IP-HOST:HOST=eir${cardLoc}c:IPADDR=${ipAddressC}:TYPE=LOCAL
 ${ipAddressRemoteB && `ENT-IP-HOST:HOST=mme01:IPADDR=${ipAddressRemoteB}:TYPE=remote:REALM=TEKELEC.COM`}
 ${ipAddressRemoteC && `ENT-IP-HOST:HOST=mme02:IPADDR=${ipAddressRemoteC}:TYPE=remote:REALM=TEKELEC.COM`}
 
-${generateDiametercmds(!!ipAddressB, !!ipAddressC, cardLoc, 2032, 3042, numofLinks)}
+${generateDiametercmds(!!ipAddressB, !!ipAddressC, cardLoc, start_lport, start_rport, numofLinks)}
 
 alw-card:loc=${cardLoc}
 

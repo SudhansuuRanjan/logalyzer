@@ -1,0 +1,55 @@
+import { useState } from "react"
+import Card from "@renderer/components/Card"
+
+const HowTo = () => {
+  const [query, setQuery] = useState("")
+
+  const cards = [
+    {
+      path: "/how-to/run-ipsg-traffic",
+      name: "How to run IPSG traffic",
+      description: "How to run IPSG traffic on an IPSG card?",
+    },
+  ]
+
+  const filteredCards = cards.filter(
+    (card) =>
+      card.name.toLowerCase().includes(query.toLowerCase()) ||
+      card.description.toLowerCase().includes(query.toLowerCase())
+  )
+
+  return (
+    <div className="flex flex-col w-full max-w-full h-full overflow-y-auto p-4">
+      <div className="my-10">
+        <h1 className="text-2xl text-center font-bold text-pink-900 mb-4">How To?</h1>
+
+        <div className="flex items-center justify-center mb-4">
+          <input
+            type="search"
+            className="text-sm w-full max-w-md py-3 px-3 m-auto rounded-lg border border-pink-300 outline-pink-600 text-pink-500 mb-4"
+            placeholder="Search among How to?..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
+      </div>
+
+      {filteredCards.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch">
+          {filteredCards.map((card, index) => (
+            <Card
+              key={index}
+              name={card.name}
+              path={card.path}
+              description={card.description}
+            />
+          ))}
+        </div>
+      ) : (
+        <p className="text-center text-gray-400">No cards match your search.</p>
+      )}
+    </div>
+  )
+}
+
+export default HowTo;
