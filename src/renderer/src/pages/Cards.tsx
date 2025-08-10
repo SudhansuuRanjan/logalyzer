@@ -31,7 +31,7 @@ const Cards = () => {
       description: "ENUM Card for processing ENUM traffic.",
     },
     {
-      path : "/cards/sip",
+      path: "/cards/sip",
       name: "SIP Card",
       description: "SIP Card for processing SIP NP traffic.",
     },
@@ -44,6 +44,11 @@ const Cards = () => {
       path: "/cards/ipsg",
       name: "IPSG Card",
       description: "IPSG Card for processing IP Signalling (SIGTRAN) traffic.",
+    },
+    {
+      path: "/cards/meat",
+      name: "MEAT Card",
+      description: "MEAT Card for receiving m3ua traffic from m3uaplayer.",
     }
   ]
 
@@ -56,7 +61,7 @@ const Cards = () => {
   return (
     <div className="flex flex-col w-full max-w-full h-full overflow-y-auto p-4">
       <div className="my-10">
-        <h1 className="text-2xl text-center font-bold text-pink-900 mb-4">Eagle Cards</h1>
+        <h1 className="text-2xl text-center font-bold text-pink-900 mb-5">Eagle Cards</h1>
 
         <div className="flex items-center justify-center mb-4">
           <input

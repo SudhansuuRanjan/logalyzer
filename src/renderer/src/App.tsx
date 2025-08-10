@@ -21,8 +21,10 @@ import Enum from './pages/Cards/Enum';
 import SIP from './pages/Cards/SIP';
 import Deir from './pages/Cards/Deir';
 import Ipsg from './pages/Cards/Ipsg';
+import Meat from './pages/Cards/Meat'; 
 
 // How to
+import Sflog from './pages/HowTo/Sflog';
 
 function App(): React.JSX.Element {
 
@@ -52,9 +54,11 @@ function App(): React.JSX.Element {
               <Route path="/cards/enum" element={<Enum />} />
               <Route path="/cards/sip" element={<SIP />} />
               <Route path="/cards/deir" element={<Deir />} />
-              <Route path="/cards/ipsg" element={<Ipsg/>} />
+              <Route path="/cards/ipsg" element={<Ipsg />} />
+              <Route path="/cards/meat" element={<Meat />} />
 
               {/* How to */}
+              <Route path="/how-to/run-sflog-traffic" element={<Sflog />} />
 
               {/* Default route */}
             </Routes>

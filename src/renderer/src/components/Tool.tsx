@@ -17,9 +17,12 @@ const Tool = ({
             <div className="flex items-center gap-2 p-4">
                 {Icon && <Icon className="text-pink-500 self-start size-10" />}
                 <div>
-                    <h2 className="text-lg font-bold text-pink-900">
+                    <h3 style={{
+                    lineHeight: '1.5',
+                    margin: '0em 0'
+                }} className="font-bold text-pink-900">
                         {name || 'Tool Name'}
-                    </h2>
+                    </h3>
                     <p className="text-sm text-pink-900/60">
                         {description || 'This is a tool description.'}
                     </p>

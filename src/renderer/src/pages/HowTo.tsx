@@ -6,9 +6,9 @@ const HowTo = () => {
 
   const cards = [
     {
-      path: "/how-to/run-ipsg-traffic",
-      name: "How to run IPSG traffic",
-      description: "How to run IPSG traffic on an IPSG card?",
+      path: "/how-to/run-sflog-traffic",
+      name: "How to run sflog traffic",
+      description: "How to run sflog traffic on an IPSM sflog card?",
     },
   ]
 
