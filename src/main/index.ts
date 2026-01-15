@@ -84,7 +84,7 @@ app.whenReady().then(() => {
     return result.canceled ? null : result.filePaths[0];
   });
 
-  ipcMain.handle('fetch-jira-issue', async (event, { issueKey, pat, env }) => {
+  ipcMain.handle('fetch-jira-issue', async (_, { issueKey, pat, env }) => {
     try {
       return await fetchJiraIssue(issueKey, pat, env);
     } catch (error) {
@@ -92,7 +92,7 @@ app.whenReady().then(() => {
     }
   });
 
-  ipcMain.handle('fetch-test-steps', async (event, { issueId, pat, env }) => {
+  ipcMain.handle('fetch-test-steps', async (_, { issueId, pat, env }) => {
     try {
       return await fetchTestSteps(issueId, pat, env);
     } catch (error) {
@@ -100,7 +100,7 @@ app.whenReady().then(() => {
     }
   });
 
-  ipcMain.handle('fetch-test-execution', async (event, { executionId, pat, env }) => {
+  ipcMain.handle('fetch-test-execution', async (_, { executionId, pat, env }) => {
     try {
       return await fetchTCExecution(executionId, pat, env)
     } catch (error) {
@@ -108,7 +108,7 @@ app.whenReady().then(() => {
     }
   });
 
-  ipcMain.handle('post-single-step-result', async (event, { stepId, data, pat, env }) => {
+  ipcMain.handle('post-single-step-result', async (_, { stepId, data, pat, env }) => {
     try {
       return await postSingleStepResult(stepId, pat, env, data);
     } catch (error) {
@@ -116,7 +116,7 @@ app.whenReady().then(() => {
     }
   });
 
-  ipcMain.handle('create-test-step', async (event, { issueId, pat, env, data }) => {
+  ipcMain.handle('create-test-step', async (_, { issueId, pat, env, data }) => {
     try {
       return await createTestStep(issueId, pat, env, data)
     } catch (error) {
@@ -124,7 +124,7 @@ app.whenReady().then(() => {
     }
   });
 
-  ipcMain.handle('update-test-step', async (event, { issueId, stepId, pat, env, data }) => {
+  ipcMain.handle('update-test-step', async (_, { issueId, stepId, pat, env, data }) => {
     try {
       return await updateTestStep(issueId, stepId, pat, env, data)
     } catch (error) {
@@ -132,7 +132,7 @@ app.whenReady().then(() => {
     }
   });
 
-  ipcMain.handle('delete-test-step', async (event, { issueId, stepId, pat, env }) => {
+  ipcMain.handle('delete-test-step', async (_, { issueId, stepId, pat, env }) => {
     try {
       return await deleteTestStep(issueId, stepId, pat, env)
     } catch (error) {
