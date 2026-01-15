@@ -5,7 +5,7 @@ const IPHexDecBinary = () => {
   const [ip, setIp] = useState('10.75.144.216')
   const [decimal, setDecimal] = useState('0')
   const [hex, setHex] = useState('0x0')
-  const [binary, setBinary] = useState('00000000000000000000000000000000')
+  const [_, setBinary] = useState('00000000000000000000000000000000')
   const [ipv6Short, setIpv6Short] = useState('')
   const [ipv6Long, setIpv6Long] = useState('')
   const [copied, setCopied] = useState<string | null>(null)
