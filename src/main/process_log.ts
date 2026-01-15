@@ -106,8 +106,6 @@ function extractLogs(inputLogs: string, filePath: string): LogParams {
   extractSevs(lines, 'Severity 3');
   extractObits(lines, 'Obit');
 
-
-  console.log('File Info:', fileParams);
   return logParams;
 }
 
@@ -125,9 +123,6 @@ function extractEagleInfo(lines: string[]): void {
       if (estIndex > 1 && eagleIndex > estIndex) {
         const station = parts[0]; // e.g., tklc1111101
         const release = parts[eagleIndex + 1]; // e.g., 48.0.0.0.0-80.20.0
-
-        console.log('Eagle Release:', `"${release}"`);
-        console.log('Eagle Station:', `"${station}"`);
         logParams.eagleRel = release;
         logParams.eagleStation = station;
         return; // stop after first match

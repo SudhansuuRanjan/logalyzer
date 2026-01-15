@@ -41,7 +41,6 @@ const IPHexDecBinary = () => {
       const { short, long } = decimalToIPv6(dec)
       setIpv6Short(short)
       setIpv6Long(long)
-      console.log(binary);
     } else {
       setDecimal('Invalid')
       setHex('Invalid')

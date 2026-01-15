@@ -48,8 +48,8 @@ ${ipAddressC && `ENT-IP-HOST:HOST=enum${cardLoc}c:IPADDR=${ipAddressC}:TYPE=LOCA
 ${ipAddressRemoteB && `ENT-IP-HOST:HOST=renumb:IPADDR=${ipAddressRemoteB}:TYPE=remote`}
 ${ipAddressRemoteC && `ENT-IP-HOST:HOST=renumc:IPADDR=${ipAddressRemoteC}:TYPE=remote`}
 
-${ipAddressB && `ENT-IP-CONN:LPORT=5353:LHOST=enum${cardLoc}b:PROT=UDP:CNAME=Conn1\nCHG-IP-CONN:OPEN=YES:CNAME=Conn1`}
-${ipAddressC && `ENT-IP-CONN:LPORT=5354:LHOST=enum${cardLoc}c:PROT=UDP:CNAME=Conn2\nCHG-IP-CONN:OPEN=YES:CNAME=Conn2`}
+${ipAddressB && `ENT-IP-CONN:LPORT=5353:LHOST=enum${cardLoc}b:PROT=UDP:CNAME=e${cardLoc}c1\nCHG-IP-CONN:OPEN=YES:CNAME=e${cardLoc}c1`}
+${ipAddressC && `ENT-IP-CONN:LPORT=5354:LHOST=enum${cardLoc}c:PROT=UDP:CNAME=e${cardLoc}c2\nCHG-IP-CONN:OPEN=YES:CNAME=e${cardLoc}c2`}
 
 ${defrouter && `chg-ip-card:loc=${cardLoc}:defrouter=${defrouter}`}
 alw-card:loc=${cardLoc}`;

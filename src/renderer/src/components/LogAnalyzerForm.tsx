@@ -22,7 +22,6 @@ const Form = () => {
         });
 
         window.streamFileAPI.onFileEnd((structuredLogs: any) => {
-            console.log('Parsed Logs:', structuredLogs);
             setUpgradeLogs(structuredLogs);  // Update Zustand store
             console.table(structuredLogs.sev1s_details);  // ✅ working usage
         });

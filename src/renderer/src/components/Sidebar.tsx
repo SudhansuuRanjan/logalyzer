@@ -1,13 +1,16 @@
 import { NavLink } from 'react-router-dom';
-import { FaTools, FaSdCard, FaNetworkWired, FaSearch } from 'react-icons/fa';
+import { FaTools, FaSdCard, FaNetworkWired, FaSearch, FaFileUpload, FaSatellite, FaKey } from 'react-icons/fa';
 import electronLogo from '../assets/electron.svg';
 
 const Sidebar = () => {
   const navItems = [
-    { name: 'Analyze Upgrade Logs', path: '/', icon: <FaSearch/> },
+    { name: 'Analyze Upgrade Logs', path: '/', icon: <FaSearch /> },
     { name: 'Eagle Cards', path: '/cards', icon: <FaSdCard /> },
     { name: 'Tools', path: '/tools', icon: <FaTools /> },
     { name: 'How To?', path: '/how-to', icon: <FaNetworkWired /> },
+    { name: "Post Results", path: "/post-results", icon: <FaSatellite /> },
+    { name: "Update TestCase", path: "/update-testcase", icon: <FaFileUpload /> },
+    { name: 'Manage PAT', path: '/manage-pat', icon: <FaKey /> },
   ];
 
   return (
@@ -40,10 +43,9 @@ const Sidebar = () => {
             key={name}
             to={path}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
-                isActive
-                  ? 'bg-white text-pink-900 shadow-sm'
-                  : 'text-pink-700 hover:bg-white hover:text-pink-900'
+              `flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${isActive
+                ? 'bg-white text-pink-900 shadow-sm'
+                : 'text-pink-700 hover:bg-white hover:text-pink-900'
               }`
             }
           >

@@ -1,10 +1,6 @@
 import Sidebar from './components/Sidebar'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import UpgLogs from './pages/UpgLogs';
-import Cards from './pages/Cards';
-import Tools from './pages/Tools';
-import HowTo from './pages/HowTo';
 
 // tools
 import PointCodeConverter from './pages/Tools/PointCodeConverter';
@@ -21,10 +17,17 @@ import Enum from './pages/Cards/Enum';
 import SIP from './pages/Cards/SIP';
 import Deir from './pages/Cards/Deir';
 import Ipsg from './pages/Cards/Ipsg';
-import Meat from './pages/Cards/Meat'; 
+import Meat from './pages/Cards/Meat';
 
 // How to
 import Sflog from './pages/HowTo/Sflog';
+import UpgLogs from './pages/UpgLogs';
+import Cards from './pages/Cards';
+import Tools from './pages/Tools';
+import HowTo from './pages/HowTo';
+import ManagePAT from './pages/ManagePAT';
+import PostTestResults from './pages/PostTestResults';
+import ZephyrBulkUpdater from './pages/BulkUpdateTestCases';
 
 function App(): React.JSX.Element {
 
@@ -39,6 +42,9 @@ function App(): React.JSX.Element {
               <Route path="/cards" element={<Cards />} />
               <Route path="/tools" element={<Tools />} />
               <Route path="/how-to" element={<HowTo />} />
+              <Route path='/manage-pat' element={<ManagePAT />} />
+              <Route path='/post-results' element={<PostTestResults />} />
+              <Route path='/update-testcase' element={<ZephyrBulkUpdater/>}/>
 
               {/* Tools */}
               <Route path="/tools/point-code-converter" element={<PointCodeConverter />} />

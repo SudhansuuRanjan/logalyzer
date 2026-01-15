@@ -4,26 +4,28 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import fs from "fs"
 import extractLogs from './process_log'
-import Database from 'better-sqlite3';
-import path from 'path';
-const dbPath = path.join(__dirname, 'mydatabase.db');
+// import Database from 'better-sqlite3';
+// import path from 'path';
+// const dbPath = path.join(__dirname, 'mydatabase.db');
 
-export const db = new Database(dbPath);
+import { fetchJiraIssue, fetchTCExecution, fetchTestSteps, postSingleStepResult, createTestStep, updateTestStep, deleteTestStep } from './api/jira';
 
-try {
-  console.log('Initializing database at:', dbPath);
-  // Example table creation
-  db.prepare(`
-  CREATE TABLE IF NOT EXISTS notes (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT NOT NULL,
-    content TEXT
-  )
-`).run();
+// export const db = new Database(dbPath);
 
-} catch (error) {
-  console.error('Error initializing database:', error);
-}
+// try {
+//   console.log('Initializing database at:', dbPath);
+//   // Example table creation
+//   db.prepare(`
+//   CREATE TABLE IF NOT EXISTS notes (
+//     id INTEGER PRIMARY KEY AUTOINCREMENT,
+//     title TEXT NOT NULL,
+//     content TEXT
+//   )
+// `).run();
+
+// } catch (error) {
+//   console.error('Error initializing database:', error);
+// }
 
 function createWindow(): void {
   // Create the browser window.
@@ -80,6 +82,62 @@ app.whenReady().then(() => {
       filters: [{ name: 'Text Files', extensions: ['txt', 'log', 'cap'] }]
     });
     return result.canceled ? null : result.filePaths[0];
+  });
+
+  ipcMain.handle('fetch-jira-issue', async (event, { issueKey, pat, env }) => {
+    try {
+      return await fetchJiraIssue(issueKey, pat, env);
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  ipcMain.handle('fetch-test-steps', async (event, { issueId, pat, env }) => {
+    try {
+      return await fetchTestSteps(issueId, pat, env);
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  ipcMain.handle('fetch-test-execution', async (event, { executionId, pat, env }) => {
+    try {
+      return await fetchTCExecution(executionId, pat, env)
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  ipcMain.handle('post-single-step-result', async (event, { stepId, data, pat, env }) => {
+    try {
+      return await postSingleStepResult(stepId, pat, env, data);
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  ipcMain.handle('create-test-step', async (event, { issueId, pat, env, data }) => {
+    try {
+      return await createTestStep(issueId, pat, env, data)
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  ipcMain.handle('update-test-step', async (event, { issueId, stepId, pat, env, data }) => {
+    try {
+      return await updateTestStep(issueId, stepId, pat, env, data)
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  ipcMain.handle('delete-test-step', async (event, { issueId, stepId, pat, env }) => {
+    try {
+      return await deleteTestStep(issueId, stepId, pat, env)
+    } catch (error) {
+      throw error;
+    }
   });
 
   ipcMain.on('read-large-file', (event, filePath) => {
