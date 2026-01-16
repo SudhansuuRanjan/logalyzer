@@ -1,5 +1,5 @@
 appId: com.electron.app
-productName: eagle-log-analyzer
+productName: Logalyzer
 directories:
   buildResources: build
 files:
@@ -12,7 +12,7 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: eagle-log-analyzer
+  executableName: logalyzer
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}

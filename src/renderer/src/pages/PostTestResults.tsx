@@ -383,7 +383,7 @@ const PostTestResults: React.FC = () => {
                                   onChange={(e) => updateRowState(id, { status: e.target.value })}
                                   className="p-1 border border-pink-200 rounded text-sm"
                                 >
-                                  {Object.keys(status).filter(k => k !== "-1").map(k => (
+                                  {Object.keys(status).map(k => (
                                     <option key={k} value={k}>{(status as any)[k].name}</option>
                                   ))}
                                 </select>
@@ -422,7 +422,7 @@ const PostTestResults: React.FC = () => {
                           onChange={(e) => setBulkStatus(e.target.value)}
                           className="p-2 border border-pink-300 rounded"
                         >
-                          {Object.keys(status).filter(k => k !== "-1").map(k => (
+                          {Object.keys(status).map(k => (
                             <option key={k} value={k}>{(status as any)[k].name}</option>
                           ))}
                         </select>
