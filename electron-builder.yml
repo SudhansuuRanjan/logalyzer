@@ -13,6 +13,7 @@ asarUnpack:
   - resources/**
 win:
   executableName: logalyzer
+  icon: build/icon.ico
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}
@@ -20,6 +21,7 @@ nsis:
   createDesktopShortcut: always
 mac:
   entitlementsInherit: build/entitlements.mac.plist
+  icon: build/icon.icns
   extendInfo:
     - NSCameraUsageDescription: Application requests access to the device's camera.
     - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
