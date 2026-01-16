@@ -32,7 +32,6 @@ export const fetchJiraIssue = async (issueKey: string, pat: string, env: string)
 
     return { data: response.data, executions: executionData };
   } catch (err: any) {
-    console.log(err)
     throw new Error(`Jira API Error: ${err.message} (Status: ${err.response?.status || 'unknown'})`);
   }
 };

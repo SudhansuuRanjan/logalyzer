@@ -1,5 +1,6 @@
 import Sidebar from './components/Sidebar'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// CHANGE: Import HashRouter instead of BrowserRouter
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
 // tools
@@ -33,7 +34,7 @@ function App(): React.JSX.Element {
 
   return (
     <Router>
-      <div className='flex h-screen w-screen'>
+      <div className='flex h-screen w-screen select-text'>
         <Sidebar />
         <div className="flex-1 overflow-hidden bg-pink-50">
           <div className='border-l border-t mt-4 border-pink-300 bg-white rounded-tl-xl h-full'>
@@ -65,8 +66,6 @@ function App(): React.JSX.Element {
 
               {/* How to */}
               <Route path="/how-to/run-sflog-traffic" element={<Sflog />} />
-
-              {/* Default route */}
             </Routes>
           </div>
         </div>

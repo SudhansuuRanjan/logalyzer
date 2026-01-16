@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { FaTools, FaSdCard, FaNetworkWired, FaSearch, FaFileUpload, FaSatellite, FaKey } from 'react-icons/fa';
-import electronLogo from '../assets/electron.svg';
+import electronLogo from '../assets/icons8-settings-512.png';
 
 const Sidebar = () => {
   const navItems = [

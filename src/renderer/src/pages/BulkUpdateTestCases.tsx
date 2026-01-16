@@ -342,7 +342,7 @@ const ZephyrBulkUpdater: React.FC = () => {
     const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString();
 
     return (
-        <div className="relative flex flex-col w-full max-w-full h-full overflow-y-auto p-4 pb-10 select-text bg-white">
+        <div className="relative rounded-tl-2xl flex flex-col w-full max-w-full h-full overflow-y-auto p-4 pb-10 select-text bg-white">
 
             {/* Custom Delete Confirmation Modal */}
             {showDeleteModal && (
