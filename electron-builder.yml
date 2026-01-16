@@ -1,4 +1,4 @@
-appId: com.electron.app
+appId: com.logalyzer.app
 productName: Logalyzer
 directories:
   buildResources: build
