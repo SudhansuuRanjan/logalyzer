@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { FaTools, FaSdCard, FaNetworkWired, FaSearch, FaFileUpload, FaSatellite, FaKey } from 'react-icons/fa';
+import { FaTools, FaSdCard, FaNetworkWired, FaSearch, FaFileUpload, FaSatellite, FaKey, FaServer } from 'react-icons/fa';
 import electronLogo from '../assets/icons8-settings-512.png';
 
 const Sidebar = () => {
@@ -8,8 +8,12 @@ const Sidebar = () => {
     { name: 'Eagle Cards', path: '/cards', icon: <FaSdCard /> },
     { name: 'Tools', path: '/tools', icon: <FaTools /> },
     { name: 'How To?', path: '/how-to', icon: <FaNetworkWired /> },
+    { name: 'Test Plans', path: '/test-plans', icon: <FaTools /> },
+    { name: 'Create Issues', path: '/create-issues', icon: <FaTools /> },
     { name: "Post Results", path: "/post-results", icon: <FaSatellite /> },
     { name: "Update TestCase", path: "/update-testcase", icon: <FaFileUpload /> },
+    { name: 'Execution Overview', path: '/execution-overview', icon: <FaSearch /> },
+    { name: 'Execution Analysis', path: '/execution-analysis', icon: <FaServer /> },
     { name: 'Manage PAT', path: '/manage-pat', icon: <FaKey /> },
   ];
 

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
     FiDownload,
     FiUpload,
@@ -12,6 +12,7 @@ import {
     FiShield,
     FiLayers
 } from "react-icons/fi";
+import { useSearchParams } from 'react-router-dom'
 
 // --- Types ---
 interface ZephyrStep {
@@ -28,6 +29,9 @@ interface DiffStep extends ZephyrStep {
 }
 
 const ZephyrBulkUpdater: React.FC = () => {
+    const [searchParams] = useSearchParams()
+    const jira_issue_key = searchParams.get("issue_key");
+
     // --- Existing State ---
     const [issueKey, setIssueKey] = useState("");
     const [issueData, setIssueData] = useState<any | null>(null);
@@ -99,6 +103,12 @@ const ZephyrBulkUpdater: React.FC = () => {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        if (jira_issue_key) {
+            setIssueKey(jira_issue_key);
+        }
+    }, [jira_issue_key]);
 
     // --- New Logic: Delete Single Test Step ---
     const handleDeleteStep = (stepId: number) => {
@@ -378,7 +388,7 @@ const ZephyrBulkUpdater: React.FC = () => {
                     <p className="text-sm text-pink-400">Export, edit via CSV, and push bulk changes safely.</p>
                 </div>
 
-                <form onSubmit={fetchData} className="flex gap-2 w-full md:w-auto">
+                <form onSubmit={async(e) => await fetchData(e)} className="flex gap-2 w-full md:w-auto">
                     <input
                         type="text"
                         placeholder="Issue Key"

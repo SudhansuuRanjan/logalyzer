@@ -8,7 +8,7 @@ import extractLogs from './process_log'
 // import path from 'path';
 // const dbPath = path.join(__dirname, 'mydatabase.db');
 
-import { fetchJiraIssue, fetchTCExecution, fetchTestSteps, postSingleStepResult, createTestStep, updateTestStep, deleteTestStep } from './api/jira';
+import { fetchJiraIssue, fetchTCExecution, fetchTestSteps, postSingleStepResult, createTestStep, updateTestStep, deleteTestStep, fetchExecutionAutoComplete, fetchExecutionSearch, exportExecutionOverview, exportExecutionProgress, fetchExportedCsv, fetchIssuesInEpic, fetchEpics, fetchIssueDetails, createIssue, linkIssue } from './api/jira';
 
 // export const db = new Database(dbPath);
 
@@ -135,6 +135,86 @@ app.whenReady().then(() => {
   ipcMain.handle('delete-test-step', async (_, { issueId, stepId, pat, env }) => {
     try {
       return await deleteTestStep(issueId, stepId, pat, env)
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  ipcMain.handle('fetch-execution-autocomplete', async (_, { params, pat, env }) => {
+    try {
+      return await fetchExecutionAutoComplete(pat, env, params)
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  ipcMain.handle('fetch-execution-search', async (_, { zqlQuery, offset, maxRecords, pat, env }) => {
+    try {
+      return await fetchExecutionSearch(pat, env, zqlQuery, offset, maxRecords)
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  ipcMain.handle('export-execution-overview', async (_, { zqlQuery, pat, env }) => {
+    try {
+      return await exportExecutionOverview(pat, env, zqlQuery)
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  ipcMain.handle('export-execution-progress', async (_, { export_id, pat, env }) => {
+    try {
+      return await exportExecutionProgress(pat, env, export_id)
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  ipcMain.handle('fetch-csv-data', async (_, { url, pat }) => {
+    try {
+      return await fetchExportedCsv(url, pat);
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  ipcMain.handle('fetch-epic', async (_, { env, pat }) => {
+    try {
+      return await fetchEpics(pat, env);
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  ipcMain.handle('fetch-issues-in-epic', async (_, { env, pat, epicKey, startAt, maxResults }) => {
+    try {
+      return await fetchIssuesInEpic(epicKey, pat, env, startAt, maxResults);
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  ipcMain.handle('fetch-issue-details', async (_, { env, pat, issueKey }) => {
+    try {
+      return await fetchIssueDetails(issueKey, pat, env);
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  ipcMain.handle('create-issue', async (_, { env, pat, payload }) => {
+    try {
+      return await createIssue(payload, pat, env);
+    } catch (error) {
+      throw error;
+    }
+  });
+
+  ipcMain.handle('link-issue', async (_, { env, pat, storyKey, testKey }) => {
+    try {
+      return await linkIssue(storyKey, testKey, pat, env);
     } catch (error) {
       throw error;
     }

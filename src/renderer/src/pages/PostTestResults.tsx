@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react";
 import { status } from "@renderer/utils/status";
 import { IssueData } from "@renderer/types";
 import { FiCheckSquare, FiActivity, FiZap, FiFileText } from "react-icons/fi";
-
-let env = "prod";
-if (localStorage.getItem("environment")) {
-  env = localStorage.getItem("environment")!;
-}
+import { useSearchParams } from 'react-router-dom'
 
 const PostTestResults: React.FC = () => {
+  const [searchParams] = useSearchParams()
+  const jira_issue_key = searchParams.get("issue_key");
+
   const [issueData, setIssueData] = useState<IssueData | null>(null);
   const [executions, setExecutions] = useState<any[]>([]);
   const [testSteps, setTestSteps] = useState<any[]>([]);
@@ -26,6 +25,10 @@ const PostTestResults: React.FC = () => {
   const [rowStates, setRowStates] = useState<Record<string, { status: string, comment: string }>>({});
 
   const stripPTags = (html?: string) => typeof html === "string" ? html.replace(/^<p>/i, "").replace(/<\/p>$/i, "") : "";
+
+  // --- Existing Helpers ---
+  const getEnv = (): string => localStorage.getItem("environment") || "prod";
+  const getPat = (): string | null => localStorage.getItem("pat");
 
   // Helper to initialize row states when steps are fetched
   useEffect(() => {
@@ -64,7 +67,7 @@ const PostTestResults: React.FC = () => {
   };
 
   const handlePostRow = async (step: any) => {
-    const pat = localStorage.getItem("pat");
+    const pat = getPat();
     if (!pat) { setError("No PAT found"); return; }
 
     const id = String(step.id);
@@ -77,7 +80,7 @@ const PostTestResults: React.FC = () => {
         stepId: id,
         data: { status: row.status, comment: row.comment },
         pat,
-        env
+        env: getEnv()
       });
     } catch (err: any) {
       setError(`Failed to post result for step ${id}: ${err.message}`);
@@ -87,7 +90,7 @@ const PostTestResults: React.FC = () => {
   };
 
   const handlePostBulk = async () => {
-    const pat = localStorage.getItem("pat");
+    const pat = getPat();
     const selectedIds = Object.keys(selected).filter(id => selected[id]);
 
     if (!pat || selectedIds.length === 0) return;
@@ -101,7 +104,7 @@ const PostTestResults: React.FC = () => {
             stepId: id,
             data: { status: bulkStatus, comment: bulkComment },
             pat,
-            env
+            env: getEnv()
           });
           // Update local state to reflect the bulk change
           updateRowState(id, { status: bulkStatus, comment: bulkComment });
@@ -116,8 +119,8 @@ const PostTestResults: React.FC = () => {
     }
   };
 
-  const fetchData = async () => {
-    const pat = localStorage.getItem("pat");
+  const fetchData = async (issueKey: string) => {
+    const pat = getPat();
     if (!issueKey.trim() || !pat) {
       setError("Please ensure Issue Key and PAT are provided.");
       return;
@@ -126,12 +129,12 @@ const PostTestResults: React.FC = () => {
     setLoading(true);
     setError("");
     try {
-      const response = await (window as any).api.invoke("fetch-jira-issue", { issueKey: issueKey.trim(), pat, env });
+      const response = await (window as any).api.invoke("fetch-jira-issue", { issueKey: issueKey.trim(), pat, env: getEnv() });
       setIssueData(response.data);
       setExecutions(response.executions || []);
 
       if (response?.data?.id) {
-        const stepsResponse = await (window as any).api.invoke("fetch-test-steps", { issueId: response.data.id, pat, env });
+        const stepsResponse = await (window as any).api.invoke("fetch-test-steps", { issueId: response.data.id, pat, env: getEnv() });
         setTestSteps(stepsResponse?.stepBeanCollection ?? []);
       }
     } catch (err: any) {
@@ -142,12 +145,12 @@ const PostTestResults: React.FC = () => {
   };
 
   const fetchTextExecution = async (executionId: string) => {
-    const pat = localStorage.getItem("pat");
-    if (!pat) return;
+    const pat = getPat();
+    if (!pat) return setError("No PAT found");
 
     setExecutionLoading(true);
     try {
-      const stepsResponse = await (window as any).api.invoke("fetch-test-execution", { executionId, pat, env });
+      const stepsResponse = await (window as any).api.invoke("fetch-test-execution", { executionId, pat, env: getEnv() });
       setExecutionSteps(stepsResponse ?? []);
       setTab("results");
     } catch (error: any) {
@@ -161,12 +164,18 @@ const PostTestResults: React.FC = () => {
     return new Date(dateString).toLocaleDateString();
   };
 
+  useEffect(() => {
+    if (jira_issue_key) {
+      fetchData(jira_issue_key);
+    }
+  }, [jira_issue_key]);
+
 
   return (
     <div className="flex flex-col w-full max-w-full h-full overflow-y-auto p-4 pb-10">
       <h2 className="text-2xl font-bold text-pink-900 mb-4">Post Test Results</h2>
 
-      <form onSubmit={(e) => { e.preventDefault(); fetchData(); }} className="mb-4">
+      <form onSubmit={(e) => { e.preventDefault(); fetchData(issueKey); }} className="mb-4">
         <div className="flex gap-2">
           <input
             type="text"
@@ -191,7 +200,7 @@ const PostTestResults: React.FC = () => {
         </div>
       )}
 
-      {issueData?  (
+      {issueData ? (
         <>
           {/* Issue Info Card */}
           <div className="bg-gray-100 p-6 rounded-lg border border-pink-300">
@@ -459,84 +468,84 @@ const PostTestResults: React.FC = () => {
             </div>
           )}
         </>
-      ): <div className="flex flex-col items-center justify-center py-12 px-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
-    {/* Hero Section */}
-    <div className="text-center max-w-2xl mb-12">
-        <div className="inline-flex items-center justify-center p-3 bg-pink-100 rounded-2xl text-pink-600 mb-6">
+      ) : <div className="flex flex-col items-center justify-center py-12 px-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        {/* Hero Section */}
+        <div className="text-center max-w-2xl mb-12">
+          <div className="inline-flex items-center justify-center p-3 bg-pink-100 rounded-2xl text-pink-600 mb-6">
             <FiCheckSquare size={40} />
-        </div>
-        <h1 className="text-4xl font-extrabold text-pink-900 mb-4 tracking-tight">
+          </div>
+          <h1 className="text-4xl font-extrabold text-pink-900 mb-4 tracking-tight">
             Zephyr Result Manager
-        </h1>
-        <p className="text-lg text-pink-400 leading-relaxed">
-            Update your Jira test executions in real-time. Sync statuses, 
+          </h1>
+          <p className="text-lg text-pink-400 leading-relaxed">
+            Update your Jira test executions in real-time. Sync statuses,
             add comments, and manage test cycles with high-speed bulk actions.
-        </p>
-    </div>
+          </p>
+        </div>
 
-    {/* Feature Grid */}
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mb-16">
-        <div className="p-6 bg-white border border-pink-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+        {/* Feature Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mb-16">
+          <div className="p-6 bg-white border border-pink-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
             <div className="w-10 h-10 bg-pink-50 text-pink-500 rounded-lg flex items-center justify-center mb-4">
-                <FiActivity size={20} />
+              <FiActivity size={20} />
             </div>
             <h3 className="font-bold text-pink-900 mb-2">Cycle Tracking</h3>
             <p className="text-sm text-gray-500 leading-relaxed">
-                Automatically fetch all execution cycles associated with your Jira issue, including versions and assignees.
+              Automatically fetch all execution cycles associated with your Jira issue, including versions and assignees.
             </p>
-        </div>
+          </div>
 
-        <div className="p-6 bg-white border border-pink-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+          <div className="p-6 bg-white border border-pink-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
             <div className="w-10 h-10 bg-pink-50 text-pink-500 rounded-lg flex items-center justify-center mb-4">
-                <FiZap size={20} />
+              <FiZap size={20} />
             </div>
             <h3 className="font-bold text-pink-900 mb-2">Bulk Posting</h3>
             <p className="text-sm text-gray-500 leading-relaxed">
-                Update status and comments for dozens of test steps simultaneously. Save hours of manual entry in Jira.
+              Update status and comments for dozens of test steps simultaneously. Save hours of manual entry in Jira.
             </p>
-        </div>
+          </div>
 
-        <div className="p-6 bg-white border border-pink-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+          <div className="p-6 bg-white border border-pink-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
             <div className="w-10 h-10 bg-pink-50 text-pink-500 rounded-lg flex items-center justify-center mb-4">
-                <FiFileText size={20} />
+              <FiFileText size={20} />
             </div>
             <h3 className="font-bold text-pink-900 mb-2">Step Verification</h3>
             <p className="text-sm text-gray-500 leading-relaxed">
-                Review test data and expected results side-by-side with your execution status to ensure total accuracy.
+              Review test data and expected results side-by-side with your execution status to ensure total accuracy.
             </p>
+          </div>
         </div>
-    </div>
 
-    {/* Quick Start Guide */}
-    <div className="w-full max-w-3xl bg-pink-50/50 rounded-3xl p-8 border border-pink-100/50">
-        <h3 className="text-center font-bold text-pink-900 mb-8 uppercase tracking-widest text-xs">
+        {/* Quick Start Guide */}
+        <div className="w-full max-w-3xl bg-pink-50/50 rounded-3xl p-8 border border-pink-100/50">
+          <h3 className="text-center font-bold text-pink-900 mb-8 uppercase tracking-widest text-xs">
             How to record results
-        </h3>
-        <div className="space-y-6">
+          </h3>
+          <div className="space-y-6">
             <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-8 h-8 bg-pink-900 text-white rounded-full flex items-center justify-center font-bold text-sm">1</div>
-                <div>
-                    <p className="font-bold text-pink-900 text-sm">Load the Test Case</p>
-                    <p className="text-xs text-pink-400 mt-1">Enter your Jira Issue Key (e.g., DSRQA-110) to pull the metadata and available cycles.</p>
-                </div>
+              <div className="flex-shrink-0 w-8 h-8 bg-pink-900 text-white rounded-full flex items-center justify-center font-bold text-sm">1</div>
+              <div>
+                <p className="font-bold text-pink-900 text-sm">Load the Test Case</p>
+                <p className="text-xs text-pink-400 mt-1">Enter your Jira Issue Key (e.g., DSRQA-110) to pull the metadata and available cycles.</p>
+              </div>
             </div>
             <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-8 h-8 bg-pink-900 text-white rounded-full flex items-center justify-center font-bold text-sm">2</div>
-                <div>
-                    <p className="font-bold text-pink-900 text-sm">Pick an Execution Cycle</p>
-                    <p className="text-xs text-pink-400 mt-1">Click "Execute Cycle" on the specific release or cycle you are currently testing.</p>
-                </div>
+              <div className="flex-shrink-0 w-8 h-8 bg-pink-900 text-white rounded-full flex items-center justify-center font-bold text-sm">2</div>
+              <div>
+                <p className="font-bold text-pink-900 text-sm">Pick an Execution Cycle</p>
+                <p className="text-xs text-pink-400 mt-1">Click "Execute Cycle" on the specific release or cycle you are currently testing.</p>
+              </div>
             </div>
             <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-8 h-8 bg-pink-900 text-white rounded-full flex items-center justify-center font-bold text-sm">3</div>
-                <div>
-                    <p className="font-bold text-pink-900 text-sm">Submit Results</p>
-                    <p className="text-xs text-pink-400 mt-1">Update individual rows or use "Select All" to apply a status and comment to multiple steps at once.</p>
-                </div>
+              <div className="flex-shrink-0 w-8 h-8 bg-pink-900 text-white rounded-full flex items-center justify-center font-bold text-sm">3</div>
+              <div>
+                <p className="font-bold text-pink-900 text-sm">Submit Results</p>
+                <p className="text-xs text-pink-400 mt-1">Update individual rows or use "Select All" to apply a status and comment to multiple steps at once.</p>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-</div>}
+      </div>}
     </div>
   );
 };
